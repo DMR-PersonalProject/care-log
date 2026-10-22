@@ -7,3 +7,32 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Every button and input is at least 44px tall (min-h-11) so it is easy to tap. */
+@layer components {
+    .btn {
+        @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-5 py-2 text-lg font-semibold whitespace-nowrap focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-600;
+    }
+    .btn-primary {
+        @apply bg-sky-700 text-white hover:bg-sky-800;
+    }
+    .btn-secondary {
+        @apply border border-stone-300 bg-white text-stone-800 hover:bg-stone-100;
+    }
+    .btn-danger {
+        @apply bg-red-700 text-white hover:bg-red-800;
+    }
+    .field-label {
+        @apply mb-1 block text-lg font-semibold text-stone-800;
+    }
+    .field-input {
+        @apply block min-h-11 w-full rounded-lg border border-stone-400 bg-white px-3 py-2 text-lg text-stone-900 focus:border-sky-600 focus:ring-3 focus:ring-sky-200 focus:outline-none;
+    }
+    .card {
+        @apply rounded-xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6;
+    }
+}
