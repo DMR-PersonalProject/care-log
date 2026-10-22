@@ -80,3 +80,12 @@ Done, Partial, Refused, Missed, Needs Attention.
 - Commit after each working slice.
 - Ask before adding any new package beyond the stack above.
 - Back up by copying `database/database.sqlite`. Mention this in the README at the end.
+
+## Git workflow
+- Remote `origin` is my private GitHub repo `care-log`; the branch is `main`.
+- At the end of each milestone, after tests pass:
+  1. Run `git status` and show me the list of files.
+  2. Commit with a short imperative subject and a body explaining what changed and why.
+  3. Tag it `milestone-N`.
+  4. Push with `git push origin main --tags`.
+- Never commit `.env`, the SQLite database, `vendor`, `node_modules` or `public/build`.
