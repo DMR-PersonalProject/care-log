@@ -1,58 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Care Log
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A daily caregiving journal that replaces the paper notebook. It is used to log
+the daily care of a loved one with dementia: meals, medicine, bathing,
+toileting, exercise, dentures, sleep, stories and conversations, and vital
+signs.
 
-## About Laravel
+It runs on your own computer only (at `http://127.0.0.1:8000`). There are no
+accounts or passwords, and nothing is sent over the internet.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## What it does
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Dashboard**: today at a glance (meals, medicine, last bath, urination and
+  dentures), the latest vitals with readings outside the usual range in red, a
+  7 or 30 day vitals chart, and the most recent entries.
+- **Daily Log**: pick a day, add entries at the top, and see the whole day in
+  time order. Every entry can be viewed, edited or deleted.
+- **All Entries**: every entry, newest first, 15 per page, with search across
+  notes, activity and status.
+- **Reports**: choose a date range, activity and status to see counts, average
+  vitals and the matching entries by day. Reports can be printed or downloaded
+  as a PDF.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Dates are shown as mm/dd/yyyy and times as 12-hour with AM/PM. It works on a
+desktop, tablet or phone.
 
-## Learning Laravel
+## What you need
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3 or newer, with the `pdo_sqlite`, `mbstring` and `dom` extensions
+- [Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/) and npm
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## First-time setup
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+From the project folder:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+On Windows PowerShell, use these instead of `cp` and `touch`:
 
-## Contributing
+```powershell
+Copy-Item .env.example .env
+New-Item database/database.sqlite -ItemType File
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`--seed` adds a few sample entries so you can try the app. To start with an
+empty log, run `php artisan migrate` without `--seed`.
 
-## Code of Conduct
+## Running the app
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+Then open <http://127.0.0.1:8000> in a browser. Leave the window running while
+you use the app, and press `Ctrl+C` in it to stop.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you are changing the page styles, also run `npm run dev` in a second window
+so changes show up straight away.
 
-## License
+## Backing up your data
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Everything is stored in one file: **`database/database.sqlite`**.
+
+To back up:
+
+1. Stop the app (`Ctrl+C` in the window running `php artisan serve`).
+2. Copy `database/database.sqlite` somewhere safe, such as a USB drive or a
+   cloud folder. Putting the date in the name helps, for example
+   `care-log-2026-10-23.sqlite`.
+
+To restore, stop the app, copy your backup back to `database/database.sqlite`
+(replacing the one there), and start the app again.
+
+Back up regularly, for example once a week. This file is not stored in Git.
+
+## Settings
+
+- **Timezone**: `Asia/Manila`, set in `config/app.php` (`'timezone'`).
+- **App name**: `APP_NAME` in `.env`.
+- **Usual vitals ranges** (used for the red High/Low warnings): in
+  `app/Support/Vitals.php`. These are general adult ranges; change them to what
+  her doctor recommends.
+
+## Adding an activity type
+
+All activity types are listed in one place, `app/Enums/Activity.php`. To add
+one, such as Bowel Movement, add a case:
+
+```php
+case BowelMovement = 'bowel_movement';
+```
+
+and, if the name should read differently from the case name, a label in
+`label()`:
+
+```php
+self::BowelMovement => 'Bowel Movement',
+```
+
+It then appears in every dropdown, the search and the reports. No database
+change is needed.
+
+## Running the tests
+
+```bash
+php artisan test
+```

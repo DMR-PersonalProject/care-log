@@ -13,9 +13,10 @@
     <body class="min-h-screen bg-stone-50 text-lg text-stone-900 antialiased">
         <header class="border-b border-stone-200 bg-white">
             <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-                <a href="{{ route('dashboard') }}" class="text-2xl font-bold text-sky-800">{{ config('app.name') }}</a>
+                <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center text-2xl font-bold text-sky-800">{{ config('app.name') }}</a>
 
-                <nav class="flex flex-wrap gap-1">
+                {{-- On phones the menu spans the full width in one row, with less padding so all four fit. --}}
+                <nav class="flex w-full gap-1 sm:w-auto">
                     @foreach ([
                         ['Dashboard', route('dashboard'), request()->routeIs('dashboard')],
                         ['Daily Log', route('log'), request()->routeIs('log', 'entries.show', 'entries.edit')],
@@ -23,7 +24,7 @@
                         ['Reports', route('reports'), request()->routeIs('reports')],
                     ] as [$label, $url, $active])
                         <a href="{{ $url }}" @if ($active) aria-current="page" @endif
-                           @class(['btn', 'bg-sky-100 text-sky-900' => $active, 'text-stone-700 hover:bg-stone-100' => ! $active])>
+                           @class(['btn flex-auto px-2 sm:flex-none sm:px-5', 'bg-sky-100 text-sky-900' => $active, 'text-stone-700 hover:bg-stone-100' => ! $active])>
                             {{ $label }}
                         </a>
                     @endforeach

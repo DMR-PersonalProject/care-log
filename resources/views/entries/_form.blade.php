@@ -86,9 +86,9 @@
                         <label for="{{ $field }}" class="field-label text-base">{{ $label }}</label>
                         <div class="flex items-center gap-2">
                             <input type="number" id="{{ $field }}" name="{{ $field }}" step="{{ $step }}"
-                                   inputmode="{{ $step === '1' ? 'numeric' : 'decimal' }}" class="field-input"
+                                   inputmode="{{ $step === '1' ? 'numeric' : 'decimal' }}" class="field-input min-w-20"
                                    value="{{ old($field, $entry->{$field}) }}">
-                            <span class="shrink-0 text-base text-stone-600">{{ $unit }}</span>
+                            <span class="text-base text-stone-600">{{ $unit }}</span>
                         </div>
                         <x-field-error :name="$field" />
                     </div>

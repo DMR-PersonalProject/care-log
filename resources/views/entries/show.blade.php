@@ -18,7 +18,7 @@
 
         <dl class="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-[max-content_1fr]">
             <dt class="font-semibold text-stone-700">Description</dt>
-            <dd class="whitespace-pre-line">{{ $entry->description ?: '—' }}</dd>
+            <dd class="whitespace-pre-line wrap-anywhere">{{ $entry->description ?: '—' }}</dd>
 
             <dt class="font-semibold text-stone-700">Vitals</dt>
             <dd>{{ $entry->vitalsSummary() }}</dd>

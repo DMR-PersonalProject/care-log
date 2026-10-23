@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Activity;
 use App\Enums\Status;
 use App\Support\Vitals;
+use Database\Factories\CareEntryFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Illuminate\Support\Carbon;
 
 class CareEntry extends Model
 {
-    /** @use HasFactory<\Database\Factories\CareEntryFactory> */
+    /** @use HasFactory<CareEntryFactory> */
     use HasFactory;
 
     public const VITAL_FIELDS = ['systolic', 'diastolic', 'heart_rate', 'spo2', 'temperature'];

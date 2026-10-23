@@ -54,11 +54,11 @@
                         @foreach ($medicine as $entry)
                             <li class="py-2">
                                 <div class="flex flex-wrap items-center justify-between gap-2">
-                                    <a href="{{ route('entries.show', $entry) }}" class="font-semibold text-sky-800 underline underline-offset-2">{{ $entry->displayTime() }}</a>
+                                    <a href="{{ route('entries.show', $entry) }}" class="inline-flex min-h-11 items-center font-semibold text-sky-800 underline underline-offset-2">{{ $entry->displayTime() }}</a>
                                     <x-status-badge :status="$entry->status" />
                                 </div>
                                 @if ($entry->description)
-                                    <p class="text-base text-stone-700">{{ $entry->description }}</p>
+                                    <p class="text-base text-stone-700 wrap-anywhere">{{ $entry->description }}</p>
                                 @endif
                             </li>
                         @endforeach
@@ -71,7 +71,7 @@
                     <h3 class="text-lg font-semibold text-stone-600">{{ $title }}</h3>
                     @if ($entry)
                         <p class="text-2xl font-bold">
-                            <a href="{{ route('entries.show', $entry) }}" class="hover:underline">{{ $entry->displayWhen() }}</a>
+                            <a href="{{ route('entries.show', $entry) }}" class="inline-flex min-h-11 items-center hover:underline">{{ $entry->displayWhen() }}</a>
                         </p>
                         <div class="mt-2 flex flex-wrap items-center gap-2">
                             <x-status-badge :status="$entry->status" />
@@ -80,7 +80,7 @@
                             @endif
                         </div>
                         @if ($entry->description)
-                            <p class="mt-2 text-base text-stone-700">{{ $entry->description }}</p>
+                            <p class="mt-2 text-base text-stone-700 wrap-anywhere">{{ $entry->description }}</p>
                         @endif
                     @else
                         <p class="text-2xl font-bold text-stone-500">Not logged yet</p>

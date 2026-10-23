@@ -119,7 +119,7 @@
                 @foreach ($days as $date => $dayEntries)
                     <div>
                         <h3 class="mb-2 text-xl font-bold">
-                            <a href="{{ route('log', ['date' => $date]) }}" class="hover:underline">
+                            <a href="{{ route('log', ['date' => $date]) }}" class="inline-flex min-h-11 items-center hover:underline">
                                 {{ $dayEntries->first()->entry_date->format('l') }}, {{ $dayEntries->first()->displayDate() }}
                             </a>
                         </h3>
