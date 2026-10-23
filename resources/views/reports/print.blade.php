@@ -6,6 +6,9 @@
     {{-- Shown on screen only --}}
     <div class="print-hidden mx-auto flex max-w-5xl flex-wrap gap-3 px-4 pt-6">
         <button type="button" onclick="window.print()" class="btn btn-primary">Print</button>
+        @if ($entries->isNotEmpty())
+            <a href="{{ route('reports.pdf', request()->query()) }}" class="btn btn-secondary">Download PDF</a>
+        @endif
         <a href="{{ route('reports', request()->query()) }}" class="btn btn-secondary">Back to report</a>
     </div>
 

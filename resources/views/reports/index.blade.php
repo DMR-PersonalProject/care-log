@@ -59,7 +59,10 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
             <h2 id="summary-heading" class="text-2xl font-bold">{{ $report->rangeLabel() }}</h2>
             @if ($entries->total() > 0)
-                <a href="{{ route('reports.print', request()->except('page')) }}" class="btn btn-secondary">Print report</a>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ route('reports.print', request()->except('page')) }}" class="btn btn-secondary">Print report</a>
+                    <a href="{{ route('reports.pdf', request()->except('page')) }}" class="btn btn-secondary">Download PDF</a>
+                </div>
             @endif
         </div>
         <p class="mb-4 text-lg text-stone-700">

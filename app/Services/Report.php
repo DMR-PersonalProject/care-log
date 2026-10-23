@@ -43,6 +43,33 @@ class Report
         return $this->ordered()->get();
     }
 
+    /**
+     * Everything the print view and the PDF show.
+     *
+     * @return array{entries: Collection, days: \Illuminate\Support\Collection, counts: array<string, int>, averages: list<array>}
+     */
+    public function printData(): array
+    {
+        $entries = $this->allEntries();
+
+        return [
+            'entries' => $entries,
+            'days' => $entries->groupBy(fn (CareEntry $entry) => $entry->entry_date->toDateString()),
+            'counts' => $this->countsByActivity(),
+            'averages' => $this->averageVitals(),
+        ];
+    }
+
+    /** e.g. "care-log-report-2026-10-16-to-2026-10-23.pdf" (no slashes, which file names can't have) */
+    public function fileName(string $extension): string
+    {
+        $dates = $this->from->isSameDay($this->to)
+            ? $this->from->toDateString()
+            : $this->from->toDateString().'-to-'.$this->to->toDateString();
+
+        return "care-log-report-{$dates}.{$extension}";
+    }
+
     /** Oldest first, like reading the notebook. */
     private function ordered(): Builder
     {
