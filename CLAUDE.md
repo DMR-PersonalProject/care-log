@@ -89,3 +89,9 @@ Done, Partial, Refused, Missed, Needs Attention.
   3. Tag it `milestone-N`.
   4. Push with `git push origin main --tags`.
 - Never commit `.env`, the SQLite database, `vendor`, `node_modules` or `public/build`.
+
+## Change requests
+- Do not make adjustments, redesigns, or extra features outside the current milestone's plan.
+- If you notice something that could be improved, add it to FEEDBACK.md instead of changing it.
+- After all milestones are finished, the user will let the people who use the system try it, collect feedback, and then request changes in one batch.
+- Do not start any changes from FEEDBACK.md until the user says so.
