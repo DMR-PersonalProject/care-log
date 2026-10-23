@@ -20,6 +20,7 @@
                         ['Dashboard', route('dashboard'), request()->routeIs('dashboard')],
                         ['Daily Log', route('log'), request()->routeIs('log', 'entries.show', 'entries.edit')],
                         ['All Entries', route('entries.index'), request()->routeIs('entries.index')],
+                        ['Reports', route('reports'), request()->routeIs('reports')],
                     ] as [$label, $url, $active])
                         <a href="{{ $url }}" @if ($active) aria-current="page" @endif
                            @class(['btn', 'bg-sky-100 text-sky-900' => $active, 'text-stone-700 hover:bg-stone-100' => ! $active])>
