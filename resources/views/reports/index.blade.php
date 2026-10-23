@@ -56,7 +56,12 @@
 
     {{-- Summary --}}
     <section aria-labelledby="summary-heading" class="mb-8">
-        <h2 id="summary-heading" class="text-2xl font-bold">{{ $report->rangeLabel() }}</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 id="summary-heading" class="text-2xl font-bold">{{ $report->rangeLabel() }}</h2>
+            @if ($entries->total() > 0)
+                <a href="{{ route('reports.print', request()->except('page')) }}" class="btn btn-secondary">Print report</a>
+            @endif
+        </div>
         <p class="mb-4 text-lg text-stone-700">
             {{ $report->activity?->label() ?? 'All activities' }} · {{ $report->status?->label() ?? 'All statuses' }}
             · <strong>{{ $entries->total() }} {{ Str::plural('entry', $entries->total()) }}</strong>

@@ -35,4 +35,57 @@
     .card {
         @apply rounded-xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6;
     }
+
+    /* Printed report (reports/print.blade.php) */
+    .print-table th,
+    .print-table td {
+        @apply border border-stone-300 px-3 py-2;
+    }
+    .print-table thead {
+        @apply bg-stone-100 text-base;
+    }
+    /* Long descriptions (even long unbroken words or links) wrap inside the cell. */
+    .print-wrap {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+
+@media print {
+    @page {
+        margin: 12mm;
+    }
+
+    /* Tailwind sizes are in rem, so this scales all the text down to suit paper (body text ≈ 11pt). */
+    html:has(.print-page) {
+        font-size: 10pt;
+    }
+
+    .print-hidden {
+        display: none !important;
+    }
+    .print-sheet {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .print-table th,
+    .print-table td {
+        padding: 4pt 6pt;
+        overflow: visible;
+    }
+    /* Repeat column headings on every page a day's table runs onto. */
+    .print-table thead {
+        display: table-header-group;
+    }
+    .print-table tr,
+    .print-summary {
+        break-inside: avoid;
+    }
+    /* Keep a day's heading with the first rows of its table. */
+    .print-day-heading {
+        break-after: avoid;
+    }
 }

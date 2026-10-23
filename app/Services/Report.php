@@ -7,6 +7,7 @@ use App\Enums\Status;
 use App\Models\CareEntry;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
 /**
@@ -31,15 +32,21 @@ class Report
             ->when($this->status, fn (Builder $query, Status $status) => $query->where('status', $status));
     }
 
-    /** Oldest first, like reading the notebook. */
     public function entries(int $perPage = 15): LengthAwarePaginator
     {
-        return $this->query()
-            ->orderBy('entry_date')
-            ->orderBy('entry_time')
-            ->orderBy('id')
-            ->paginate($perPage)
-            ->withQueryString();
+        return $this->ordered()->paginate($perPage)->withQueryString();
+    }
+
+    /** Every matching entry on one list, for printing. */
+    public function allEntries(): Collection
+    {
+        return $this->ordered()->get();
+    }
+
+    /** Oldest first, like reading the notebook. */
+    private function ordered(): Builder
+    {
+        return $this->query()->orderBy('entry_date')->orderBy('entry_time')->orderBy('id');
     }
 
     public function total(): int
@@ -91,10 +98,10 @@ class Report
     }
 
     /** e.g. "10/17/2026 – 10/23/2026" */
-    public function rangeLabel(): string
+    public function rangeLabel(string $separator = ' – '): string
     {
         return $this->from->isSameDay($this->to)
             ? $this->from->format('m/d/Y')
-            : $this->from->format('m/d/Y').' – '.$this->to->format('m/d/Y');
+            : $this->from->format('m/d/Y').$separator.$this->to->format('m/d/Y');
     }
 }
