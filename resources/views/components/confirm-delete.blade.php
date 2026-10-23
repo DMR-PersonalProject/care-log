@@ -1,4 +1,4 @@
-@props(['entry'])
+@props(['entry', 'returnTo' => null])
 
 {{-- Delete button that asks first, using the browser's built-in dialog (Esc or Cancel closes it). --}}
 <div x-data class="contents">
@@ -14,6 +14,9 @@
         <form method="POST" action="{{ route('entries.destroy', $entry) }}" class="mt-6 flex flex-wrap justify-end gap-3">
             @csrf
             @method('DELETE')
+            @if ($returnTo)
+                <input type="hidden" name="return_to" value="{{ $returnTo }}">
+            @endif
             <button type="button" class="btn btn-secondary" @click="$refs.dialog.close()" autofocus>Cancel</button>
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>

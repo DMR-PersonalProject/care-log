@@ -1,4 +1,4 @@
-@props(['status'])
+@props(['status', 'words' => []])
 
 @php
     $colors = match ($status) {
@@ -10,5 +10,5 @@
 @endphp
 
 <span {{ $attributes->class(['inline-flex items-center rounded-full px-3 py-1 text-base font-semibold whitespace-nowrap ring-1', $colors]) }}>
-    {{ $status->label() }}
+    {{ App\Support\Highlight::html($status->label(), $words) }}
 </span>

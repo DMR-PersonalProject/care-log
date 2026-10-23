@@ -59,6 +59,44 @@ class CareEntry extends Model
             ->orderBy('id');
     }
 
+    public function scopeNewestFirst(Builder $query): void
+    {
+        $query->orderByDesc('entry_date')->orderByDesc('entry_time')->orderByDesc('id');
+    }
+
+    /**
+     * Every word must appear in the description or in the activity or status name
+     * as shown on screen (so "exercise" finds Pedal, "attention" finds Needs Attention).
+     */
+    public function scopeSearch(Builder $query, string $search): void
+    {
+        foreach (self::searchWords($search) as $word) {
+            $query->where(fn (Builder $q) => $q
+                ->whereRaw("description LIKE ? ESCAPE '\\'", ['%'.addcslashes($word, '%_\\').'%'])
+                ->orWhereIn('activity', self::valuesWithLabelContaining(Activity::cases(), $word))
+                ->orWhereIn('status', self::valuesWithLabelContaining(Status::cases(), $word)));
+        }
+    }
+
+    /** @return list<string> */
+    public static function searchWords(string $search): array
+    {
+        return array_values(array_unique(preg_split('/\s+/u', trim($search), -1, PREG_SPLIT_NO_EMPTY) ?: []));
+    }
+
+    /**
+     * @param  list<Activity|Status>  $cases
+     * @return list<string>
+     */
+    private static function valuesWithLabelContaining(array $cases, string $word): array
+    {
+        return collect($cases)
+            ->filter(fn (Activity|Status $case) => mb_stripos($case->label(), $word) !== false)
+            ->map->value
+            ->values()
+            ->all();
+    }
+
     public function displayDate(): string
     {
         return $this->entry_date->format('m/d/Y');

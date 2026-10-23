@@ -47,71 +47,7 @@
         @if ($entries->isEmpty())
             <p class="card text-stone-600">Nothing logged for this day yet.</p>
         @else
-            {{-- Table on larger screens --}}
-            <div class="hidden overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm md:block">
-                <table class="w-full text-left">
-                    <thead class="bg-stone-100 text-base text-stone-700">
-                        <tr>
-                            <th scope="col" class="px-4 py-3">Time</th>
-                            <th scope="col" class="px-4 py-3">Activity</th>
-                            <th scope="col" class="px-4 py-3">Status</th>
-                            <th scope="col" class="px-4 py-3">Description</th>
-                            <th scope="col" class="px-4 py-3">Vitals</th>
-                            <th scope="col" class="px-4 py-3"><span class="sr-only">Actions</span></th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-stone-200">
-                        @foreach ($entries as $entry)
-                            <tr class="align-top">
-                                <td class="px-4 py-3 font-semibold whitespace-nowrap">{{ $entry->displayTime() }}</td>
-                                <td class="px-4 py-3">
-                                    <a href="{{ route('entries.show', $entry) }}" class="font-semibold text-sky-800 underline underline-offset-2">
-                                        {{ $entry->activity->label() }}
-                                    </a>
-                                </td>
-                                <td class="px-4 py-3"><x-status-badge :status="$entry->status" /></td>
-                                <td class="px-4 py-3 whitespace-pre-line">{{ $entry->description }}</td>
-                                <td class="px-4 py-3 text-base">{{ $entry->vitalsSummary() }}</td>
-                                <td class="px-4 py-3">
-                                    <div class="flex justify-end gap-2">
-                                        <a href="{{ route('entries.edit', $entry) }}" class="btn btn-secondary">Edit</a>
-                                        <x-confirm-delete :entry="$entry" />
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            {{-- Stacked cards on phones --}}
-            <ul class="space-y-3 md:hidden">
-                @foreach ($entries as $entry)
-                    <li class="card">
-                        <div class="flex items-start justify-between gap-3">
-                            <div>
-                                <p class="text-xl font-bold">{{ $entry->displayTime() }}</p>
-                                <a href="{{ route('entries.show', $entry) }}" class="text-lg font-semibold text-sky-800 underline underline-offset-2">
-                                    {{ $entry->activity->label() }}
-                                </a>
-                            </div>
-                            <x-status-badge :status="$entry->status" />
-                        </div>
-
-                        @if ($entry->description)
-                            <p class="mt-2 whitespace-pre-line">{{ $entry->description }}</p>
-                        @endif
-                        @if ($entry->hasVitals())
-                            <p class="mt-2 text-base text-stone-700">{{ $entry->vitalsSummary() }}</p>
-                        @endif
-
-                        <div class="mt-3 flex gap-2">
-                            <a href="{{ route('entries.edit', $entry) }}" class="btn btn-secondary">Edit</a>
-                            <x-confirm-delete :entry="$entry" />
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+            @include('entries._list', ['entries' => $entries])
         @endif
     </section>
 @endsection

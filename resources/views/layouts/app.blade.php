@@ -15,10 +15,15 @@
                 <a href="{{ route('home') }}" class="text-2xl font-bold text-sky-800">{{ config('app.name') }}</a>
 
                 <nav class="flex gap-1">
-                    <a href="{{ route('log') }}"
-                       @class(['btn', 'bg-sky-100 text-sky-900' => request()->routeIs('log', 'entries.*'), 'text-stone-700 hover:bg-stone-100' => ! request()->routeIs('log', 'entries.*')])>
-                        Daily Log
-                    </a>
+                    @foreach ([
+                        ['Daily Log', route('log'), request()->routeIs('log', 'entries.show', 'entries.edit')],
+                        ['All Entries', route('entries.index'), request()->routeIs('entries.index')],
+                    ] as [$label, $url, $active])
+                        <a href="{{ $url }}" @if ($active) aria-current="page" @endif
+                           @class(['btn', 'bg-sky-100 text-sky-900' => $active, 'text-stone-700 hover:bg-stone-100' => ! $active])>
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 </nav>
             </div>
         </header>

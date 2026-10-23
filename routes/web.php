@@ -9,4 +9,4 @@ Route::redirect('/', '/log')->name('home');
 
 Route::get('/log', DailyLogController::class)->name('log');
 
-Route::resource('entries', CareEntryController::class)->except(['index', 'create']);
+Route::resource('entries', CareEntryController::class)->except(['create']);
