@@ -5,10 +5,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('sends the home page to the daily log', function () {
-    $this->get('/')->assertRedirect('/log');
-});
-
 it('shows only the chosen day, sorted by time', function () {
     CareEntry::factory()->create(['entry_date' => '2026-10-20', 'entry_time' => '18:00:00', 'description' => 'Evening soup']);
     CareEntry::factory()->create(['entry_date' => '2026-10-20', 'entry_time' => '07:00:00', 'description' => 'Morning porridge']);

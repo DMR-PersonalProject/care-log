@@ -8,14 +8,16 @@
 
         @fonts
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('scripts')
     </head>
     <body class="min-h-screen bg-stone-50 text-lg text-stone-900 antialiased">
         <header class="border-b border-stone-200 bg-white">
             <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-                <a href="{{ route('home') }}" class="text-2xl font-bold text-sky-800">{{ config('app.name') }}</a>
+                <a href="{{ route('dashboard') }}" class="text-2xl font-bold text-sky-800">{{ config('app.name') }}</a>
 
-                <nav class="flex gap-1">
+                <nav class="flex flex-wrap gap-1">
                     @foreach ([
+                        ['Dashboard', route('dashboard'), request()->routeIs('dashboard')],
                         ['Daily Log', route('log'), request()->routeIs('log', 'entries.show', 'entries.edit')],
                         ['All Entries', route('entries.index'), request()->routeIs('entries.index')],
                     ] as [$label, $url, $active])

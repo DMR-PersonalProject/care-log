@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Activity;
 use App\Enums\Status;
+use App\Support\Vitals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -59,6 +60,12 @@ class CareEntry extends Model
             ->orderBy('id');
     }
 
+    /** Leaves out entries dated after today (e.g. typed with the wrong date). */
+    public function scopeUpToToday(Builder $query): void
+    {
+        $query->where('entry_date', '<=', today()->toDateString());
+    }
+
     public function scopeNewestFirst(Builder $query): void
     {
         $query->orderByDesc('entry_date')->orderByDesc('entry_time')->orderByDesc('id');
@@ -105,6 +112,28 @@ class CareEntry extends Model
     public function displayTime(): string
     {
         return Carbon::parse($this->entry_time)->format('g:i A');
+    }
+
+    /** "Today, 4:00 PM", "Yesterday, 4:00 PM" or "Mon 10/19/2026, 4:00 PM" */
+    public function displayWhen(): string
+    {
+        $day = match (true) {
+            $this->entry_date->isToday() => 'Today',
+            $this->entry_date->isYesterday() => 'Yesterday',
+            default => $this->entry_date->format('D m/d/Y'),
+        };
+
+        return $day.', '.$this->displayTime();
+    }
+
+    public function daysAgo(): int
+    {
+        return (int) $this->entry_date->diffInDays(today());
+    }
+
+    public function vitalFlag(string $field): ?string
+    {
+        return Vitals::flag($field, $this->{$field});
     }
 
     public function hasVitals(): bool

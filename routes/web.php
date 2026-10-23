@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\CareEntryController;
 use App\Http\Controllers\DailyLogController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-// Becomes the Dashboard in Milestone 4.
-Route::redirect('/', '/log')->name('home');
+Route::get('/', DashboardController::class)->name('dashboard');
 
 Route::get('/log', DailyLogController::class)->name('log');
 
